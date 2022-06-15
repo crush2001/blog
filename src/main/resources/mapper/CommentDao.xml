@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.dao.CommentDao">
+
+    <resultMap type="com.blog.entity.Comment" id="CommentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="postId" column="post_id" jdbcType="INTEGER"/>
+        <result property="commentUserId" column="comment_user_id" jdbcType="INTEGER"/>
+        <result property="commentTime" column="comment_time" jdbcType="TIMESTAMP"/>
+        <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="replyCommentId" column="reply_comment_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CommentMap">
+        select
+          id, post_id, comment_user_id, comment_time, comment_content, reply_comment_id
+        from comment
+        where id = #{id}
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimits" resultMap="CommentMap">
+        select
+          id, post_id, comment_user_id, comment_time, comment_content, reply_comment_id
+        from comment
+        <where>
+            <if test="Comment.id != null">
+                and id = #{Comment.id}
+            </if>
+            <if test="Comment.postId != null">
+                and post_id = #{Comment.postId}
+            </if>
+            <if test="Comment.commentUserId != null">
+                and comment_user_id = #{Comment.commentUserId}
+            </if>
+            <if test="Comment.commentTime != null">
+                and comment_time = #{Comment.commentTime}
+            </if>
+            <if test="Comment.commentContent != null and Comment.commentContent != ''">
+                and comment_content = #{Comment.commentContent}
+            </if>
+            <if test="Comment.replyCommentId != null">
+                and reply_comment_id = #{Comment.replyCommentId}
+            </if>
+        </where>
+        limit #{page}, #{pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from comment
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="commentUserId != null">
+                and comment_user_id = #{commentUserId}
+            </if>
+            <if test="commentTime != null">
+                and comment_time = #{commentTime}
+            </if>
+            <if test="commentContent != null and commentContent != ''">
+                and comment_content = #{commentContent}
+            </if>
+            <if test="replyCommentId != null">
+                and reply_comment_id = #{replyCommentId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into comment(post_id, comment_user_id, comment_time, comment_content, reply_comment_id)
+        values (#{postId}, #{commentUserId}, #{commentTime}, #{commentContent}, #{replyCommentId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into comment(post_id, comment_user_id, comment_time, comment_content, reply_comment_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent}, #{entity.replyCommentId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into comment(post_id, comment_user_id, comment_time, comment_content, reply_comment_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent}, #{entity.replyCommentId})
+        </foreach>
+        on duplicate key update
+        post_id = values(post_id),
+        comment_user_id = values(comment_user_id),
+        comment_time = values(comment_time),
+        comment_content = values(comment_content),
+        reply_comment_id = values(reply_comment_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update comment
+        <set>
+            <if test="postId != null">
+                post_id = #{postId},
+            </if>
+            <if test="commentUserId != null">
+                comment_user_id = #{commentUserId},
+            </if>
+            <if test="commentTime != null">
+                comment_time = #{commentTime},
+            </if>
+            <if test="commentContent != null and commentContent != ''">
+                comment_content = #{commentContent},
+            </if>
+            <if test="replyCommentId != null">
+                reply_comment_id = #{replyCommentId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from comment where id = #{id}
+    </delete>
+
+</mapper>
+

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.dao.CollectionsDao">
+
+    <resultMap type="com.blog.entity.Collections" id="CollectionsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="currentUserId" column="current_user_id" jdbcType="INTEGER"/>
+        <result property="postId" column="post_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CollectionsMap">
+        select
+          id, current_user_id, post_id
+        from collections
+        where id = #{id}
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimits" resultMap="CollectionsMap">
+        select
+          id, current_user_id, post_id
+        from collections
+        <where>
+            <if test="Collections.id != null">
+                and id = #{Collections.id}
+            </if>
+            <if test="Collections.currentUserId != null">
+                and current_user_id = #{Collections.currentUserId}
+            </if>
+            <if test="Collections.postId != null">
+                and post_id = #{Collections.postId}
+            </if>
+        </where>
+        limit #{page}, #{pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from collections
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="currentUserId != null">
+                and current_user_id = #{currentUserId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into collections(current_user_id, post_id)
+        values (#{currentUserId}, #{postId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into collections(current_user_id, post_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.currentUserId}, #{entity.postId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into collections(current_user_id, post_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.currentUserId}, #{entity.postId})
+        </foreach>
+        on duplicate key update
+        current_user_id = values(current_user_id),
+        post_id = values(post_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update collections
+        <set>
+            <if test="currentUserId != null">
+                current_user_id = #{currentUserId},
+            </if>
+            <if test="postId != null">
+                post_id = #{postId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from collections where id = #{id}
+    </delete>
+
+</mapper>
+

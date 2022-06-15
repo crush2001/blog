@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.dao.PostDao">
+
+    <resultMap type="com.blog.entity.Post" id="PostMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="authorId" column="author_id" jdbcType="INTEGER"/>
+        <result property="catId" column="cat_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="postTime" column="post_time" jdbcType="TIMESTAMP"/>
+        <result property="tags" column="tags" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="PostMap">
+        select
+          id, author_id, cat_id, title, content, post_time, tags
+        from post
+        where id = #{id}
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimits" resultMap="PostMap">
+        select
+          id, author_id, cat_id, title, content, post_time, tags
+        from post
+        <where>
+            <if test="Post.id != null">
+                and id = #{Post.id}
+            </if>
+            <if test="Post.authorId != null">
+                and author_id = #{Post.authorId}
+            </if>
+            <if test="Post.catId != null">
+                and cat_id = #{Post.catId}
+            </if>
+            <if test="Post.title != null and Post.title != ''">
+                and title = #{Post.title}
+            </if>
+            <if test="Post.content != null and Post.content != ''">
+                and content = #{Post.content}
+            </if>
+            <if test="Post.postTime != null">
+                and post_time = #{Post.postTime}
+            </if>
+            <if test="Post.tags != null">
+                and tags = #{Post.tags}
+            </if>
+        </where>
+        limit #{page}, #{pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from post
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="authorId != null">
+                and author_id = #{authorId}
+            </if>
+            <if test="catId != null">
+                and cat_id = #{catId}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="postTime != null">
+                and post_time = #{postTime}
+            </if>
+            <if test="tags != null">
+                and tags = #{tags}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into post(author_id, cat_id, title, content, post_time, tags)
+        values (#{authorId}, #{catId}, #{title}, #{content}, #{postTime}, #{tags})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into post(author_id, cat_id, title, content, post_time, tags)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime}, #{entity.tags})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into post(author_id, cat_id, title, content, post_time, tags)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime}, #{entity.tags})
+        </foreach>
+        on duplicate key update
+        author_id = values(author_id),
+        cat_id = values(cat_id),
+        title = values(title),
+        content = values(content),
+        post_time = values(post_time),
+        tags = values(tags)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update post
+        <set>
+            <if test="authorId != null">
+                author_id = #{authorId},
+            </if>
+            <if test="catId != null">
+                cat_id = #{catId},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="postTime != null">
+                post_time = #{postTime},
+            </if>
+            <if test="tags != null">
+                tags = #{tags},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from post where id = #{id}
+    </delete>
+
+</mapper>
+

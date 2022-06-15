@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blog.dao.AdminDao">
+
+    <resultMap type="com.blog.entity.Admin" id="AdminMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="adminName" column="admin_name" jdbcType="VARCHAR"/>
+        <result property="adminPassword" column="admin_password" jdbcType="VARCHAR"/>
+        <result property="adminEmail" column="admin_email" jdbcType="VARCHAR"/>
+        <result property="adminPhone" column="admin_phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AdminMap">
+        select
+          id, admin_name, admin_password, admin_email, admin_phone
+        from admin
+        where id = #{id}
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimits" resultMap="AdminMap">
+        select
+          id, admin_name, admin_password, admin_email, admin_phone
+        from admin
+        <where>
+            <if test="Admin.id != null">
+                and id = #{Admin.id}
+            </if>
+            <if test="Admin.adminName != null and Admin.adminName != ''">
+                and admin_name = #{Admin.adminName}
+            </if>
+            <if test="Admin.adminPassword != null and Admin.adminPassword != ''">
+                and admin_password = #{Admin.adminPassword}
+            </if>
+            <if test="Admin.adminEmail != null and Admin.adminEmail != ''">
+                and admin_email = #{Admin.adminEmail}
+            </if>
+            <if test="Admin.adminPhone != null and Admin.adminPhone != ''">
+                and admin_phone = #{Admin.adminPhone}
+            </if>
+        </where>
+        limit #{page}, #{pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from admin
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="adminName != null and adminName != ''">
+                and admin_name = #{adminName}
+            </if>
+            <if test="adminPassword != null and adminPassword != ''">
+                and admin_password = #{adminPassword}
+            </if>
+            <if test="adminEmail != null and adminEmail != ''">
+                and admin_email = #{adminEmail}
+            </if>
+            <if test="adminPhone != null and adminPhone != ''">
+                and admin_phone = #{adminPhone}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into admin(admin_name, admin_password, admin_email, admin_phone)
+        values (#{adminName}, #{adminPassword}, #{adminEmail}, #{adminPhone})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into admin(admin_name, admin_password, admin_email, admin_phone)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.adminName}, #{entity.adminPassword}, #{entity.adminEmail}, #{entity.adminPhone})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into admin(admin_name, admin_password, admin_email, admin_phone)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.adminName}, #{entity.adminPassword}, #{entity.adminEmail}, #{entity.adminPhone})
+        </foreach>
+        on duplicate key update
+        admin_name = values(admin_name),
+        admin_password = values(admin_password),
+        admin_email = values(admin_email),
+        admin_phone = values(admin_phone)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update admin
+        <set>
+            <if test="adminName != null and adminName != ''">
+                admin_name = #{adminName},
+            </if>
+            <if test="adminPassword != null and adminPassword != ''">
+                admin_password = #{adminPassword},
+            </if>
+            <if test="adminEmail != null and adminEmail != ''">
+                admin_email = #{adminEmail},
+            </if>
+            <if test="adminPhone != null and adminPhone != ''">
+                admin_phone = #{adminPhone},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from admin where id = #{id}
+    </delete>
+
+</mapper>
+
