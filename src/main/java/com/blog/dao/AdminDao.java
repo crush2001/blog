@@ -82,5 +82,7 @@ public interface AdminDao {
      */
     int deleteById(Long id);
 
+    Admin login(Admin admin);
+
 }
 

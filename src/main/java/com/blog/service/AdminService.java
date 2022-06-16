@@ -56,4 +56,6 @@ public interface AdminService {
      */
     boolean deleteById(Long id);
 
+    Admin login(Admin admin);
+
 }

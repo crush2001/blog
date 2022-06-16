@@ -93,5 +93,10 @@ public class AdminController extends BaseController {
         return ResponseEntity.ok(this.adminService.deleteById(id));
     }
 
+    @PostMapping("/login")
+    public String login(Admin admin) {
+        Admin login = this.adminService.login(admin);
+        return RespInfo(1,"登录信息",login);
+    }
 }
 

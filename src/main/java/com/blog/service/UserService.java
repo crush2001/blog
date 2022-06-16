@@ -56,4 +56,6 @@ public interface UserService {
      */
     boolean deleteById(Long id);
 
+    User login(User user);
+
 }

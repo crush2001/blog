@@ -1,15 +1,14 @@
 package com.blog.entity;
-
 import java.io.Serializable;
 
 /**
  * (User)实体类
  *
  * @author makejava
- * @since 2022-06-15 08:45:47
+ * @since 2022-06-16 10:56:04
  */
 public class User implements Serializable {
-    private static final long serialVersionUID = 482890167728285706L;
+    private static final long serialVersionUID = 128085319503431226L;
     /**
      * 用户id
      */
@@ -33,7 +32,7 @@ public class User implements Serializable {
     /**
      * 性别
      */
-    private Object gender;
+    private Boolean gender;
     /**
      * 手机号
      */
@@ -88,11 +87,11 @@ public class User implements Serializable {
         this.nickname = nickname;
     }
 
-    public Object getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(Object gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 

@@ -82,5 +82,7 @@ public interface UserDao {
      */
     int deleteById(Long id);
 
+    User login(User user);
+
 }
 

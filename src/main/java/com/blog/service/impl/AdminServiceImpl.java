@@ -90,4 +90,8 @@ public class AdminServiceImpl implements AdminService {
     public boolean deleteById(Long id) {
         return this.adminDao.deleteById(id) > 0;
     }
+
+    public Admin login(Admin admin) {
+        return this.adminDao.login(admin);
+    }
 }

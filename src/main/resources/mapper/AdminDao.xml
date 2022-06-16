@@ -18,6 +18,19 @@
         where id = #{id}
     </select>
 
+    <!--登录功能-->
+    <select id="login" resultMap="AdminMap">
+        select * from admin
+        <where>
+            <if test="adminName != null and adminName != ''">
+                and admin_name = #{adminName}
+            </if>
+            <if test="adminPassword != null and adminPassword != ''">
+                and admin_password = #{adminPassword}
+            </if>
+        </where>
+    </select>
+
 
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="AdminMap">
