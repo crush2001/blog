@@ -113,6 +113,9 @@
                     {field:'signature', title: '用户个性签名'} ,
                     // {field:'createTime', title: '创建时间',templet: "<div>{{layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss')}}</div>"} ,
                     // {field:'avatar', title: '用户头像'} ,
+                    {field:'avatar', title: '头像',templet(d){
+                            return "<div><img  src=\'"+fileurl+d.avatar+"\'/></div>";
+                        }} ,
                     {title:'操作',toolbar:"#barDemo"}
                 ]],
                 parseData:function(msg){

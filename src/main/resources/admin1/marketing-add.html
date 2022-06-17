@@ -90,6 +90,19 @@
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            头像
+                        </label>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test1" >上传头像</button>
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="demo1" style="width: 80px;height: 80px;margin-left: 8.2%"><span class="x-red">*</span>需要等待弹出上传完成才可以提交数据
+                                <!--                                <p id="demoText" ></p>-->
+                                <input type="text" name="avatar" id="z" style="display: none;" />
+                            </div>
+                        </div>
+                    </div>
                     <!--
                     <div class="layui-form-item">
                         <label class="layui-form-label">
@@ -202,7 +215,38 @@
                 });
             });
 		</script>
+        <script>
+            layui.use('upload', function(){
+                var $ = layui.jquery
+                    ,upload = layui.upload;
 
+                //普通图片上传
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    ,type:"post"
+                    ,url: url+'/user/upload' //改成您自己的上传接口
+                    ,before: function(obj){
+                        //预读本地文件示例，不支持ie8
+                        console.log(obj);
+                        obj.preview(function(index, file, result){
+                            console.log(index,file,result);
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    ,done: function(res){
+                        // 如果上传失败
+                        if(res.code == 1){
+                            console.log(res);
+                            $("#z").val(res.data["upload_file"]);
+                            return layer.msg('文件上传完毕');
+                        }
+                        // 上传成功
+
+                    }
+
+                });
+            });
+        </script>
 
         <script>var _hmt = _hmt || []; (function() {
                 var hm = document.createElement("script");
