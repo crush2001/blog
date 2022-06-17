@@ -83,6 +83,6 @@ public interface AdminDao {
     int deleteById(Long id);
 
     Admin login(Admin admin);
-
+    Admin logout(Admin admin);
 }
 

@@ -94,4 +94,8 @@ public class AdminServiceImpl implements AdminService {
     public Admin login(Admin admin) {
         return this.adminDao.login(admin);
     }
+
+    public Admin logout(Admin admin){
+        return this.adminDao.logout(admin);
+    }
 }

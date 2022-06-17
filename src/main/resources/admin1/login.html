@@ -120,7 +120,8 @@
                             data:data.field,
                             dataType:"json",
                             success:function(msg){
-                                if(msg.code==1)
+                                // if(msg.code==1)
+                                if(msg.data!=null)
                                 {
                                     sessionStorage.setItem('user',JSON.stringify(msg.data));
                                     sessionStorage.setItem('sid',data.field.sid);

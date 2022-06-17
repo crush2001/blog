@@ -98,5 +98,11 @@ public class AdminController extends BaseController {
         Admin login = this.adminService.login(admin);
         return RespInfo(1,"登录信息",login);
     }
+
+    @PostMapping("/logout")
+    public String logout(String s){
+        //Admin logout = this.adminService.logout(admin);
+        return RespInfo(1,"退出信息",s);
+    }
 }
 
