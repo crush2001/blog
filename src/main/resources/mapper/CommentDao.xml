@@ -76,8 +76,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_time, comment_content, reply_comment_id)
-        values (#{postId}, #{commentUserId}, #{commentTime}, #{commentContent}, #{replyCommentId})
+        insert into comment(post_id, comment_user_id, comment_content, reply_comment_id)
+        values (#{postId}, #{commentUserId}, #{commentContent}, #{replyCommentId})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">

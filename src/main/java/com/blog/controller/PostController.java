@@ -66,7 +66,7 @@ public class PostController extends BaseController {
      * @param post 实体
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Post> add(Post post) {
         return ResponseEntity.ok(this.postService.insert(post));
     }
