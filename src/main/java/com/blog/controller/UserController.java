@@ -93,7 +93,11 @@ public class UserController extends BaseController {
         return ResponseEntity.ok(this.userService.deleteById(id));
     }
 
-
+    @PostMapping("/login")
+    public String login(User user) {
+        User login = this.userService.login(user);
+        return RespInfo(1,"登录信息",login);
+    }
 
 }
 

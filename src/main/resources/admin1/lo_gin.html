@@ -14,7 +14,7 @@
 			<h1>Welcome</h1>
 			
 			<form class="form" style="margin-top: -10px">
-				<input type="text" placeholder="请输入用户名" name="name" id="name"/>
+				<input type="username" placeholder="请输入用户名" name="name" id="name"/>
 				<input type="password" placeholder="请输入密码" name="pwd" id="pwd"/>
 				<input type="text"  placeholder="验证码" name="yzm" id="yzm"/>
 
@@ -76,6 +76,7 @@
 		var index = Math.floor(Math.random()*pool.length);
 		str +=pool[index];
 	}
+	console.log(str)
 	sessionStorage.setItem("yzm",str);
 	//console.log(str);
 	ctx.font = "30px SimHei";
@@ -106,7 +107,7 @@ $(function () {
 	})
 	$("#login-button1").click(function () {
 		// alert(111);
-		window.location.href='./admin-add.html';
+		window.location.href='./marketing-add.html';
 	});
 
 
@@ -120,7 +121,7 @@ $(function () {
 		console.log($("#yzn").val());
 		if($("#yzm").val()!=sessionStorage.getItem("yzm")){
 			alert("验证码输入错误");
-			window.location.reload();
+			//window.location.reload();
 		}else if(name!=""&&pwd!=""){
 			var urlz =window.location.host;
 			var sid= spMD5(name);
@@ -130,10 +131,9 @@ $(function () {
 				dataType:"json",
 				// url:"/account/login",
 				data:{
-					account_name:name,
-					pwd:pwd,
-					origin:urlz,
-					sid:sid
+					username:name,
+					password:pwd,
+
 				},
 				async: false,
 				success:function(msg){
@@ -146,7 +146,7 @@ $(function () {
 						$('.wrapper').addClass('form-success');
 						// sessionStorage.setItem('login',name);
 						// sessionStorage.setItem("powerz",msg.data[1]);
-						sessionStorage.setItem('login',JSON.stringify(msg.data));
+						sessionStorage.setItem('user',JSON.stringify(msg.data));
 						sessionStorage.setItem("name",name);
 						sessionStorage.setItem('sid',sid);
 						//console.log(JSON.parse(sessionStorage.getItem('login')));
@@ -191,7 +191,7 @@ $(function () {
 </script>
 
 <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#000000">
-<h1>博客</h1>
+<h1>常州奔牛机场机票管理系统</h1>
 </div>
 </body>
 </html>

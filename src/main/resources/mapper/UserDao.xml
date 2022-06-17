@@ -22,6 +22,19 @@
         where id = #{id}
     </select>
 
+    <!--登录功能-->
+    <select id="login" resultMap="UserMap">
+        select * from user
+        <where>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+        </where>
+    </select>
+
 
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="UserMap">
