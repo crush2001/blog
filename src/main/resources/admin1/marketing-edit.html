@@ -34,80 +34,71 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="username" class="layui-form-label">
-                            <span class="x-red">*</span>姓名
+                        <label class="layui-form-label"><span class="x-red">*</span>密码</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="a2" name="password"   lay-verify="required"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            邮箱
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="a3" name="name"   lay-verify="required"
+                            <input type="text" id="a3" name="email"   lay-verify="required"
                                    autocomplete="off" class="layui-input">
                         </div>
 
                     </div>
                     <div class="layui-form-item">
-                        <label for="username" class="layui-form-label">
-                            <span class="x-red">*</span>学号
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>昵称
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="a8" name="no"   lay-verify="required"
+                            <input type="text" id="a8" name="nickname"   lay-verify="required"
                                    autocomplete="off" class="layui-input">
                         </div>
 
                     </div>
                     <div class="layui-form-item">
-                        <label for="L_pass" class="layui-form-label">
-                            <span class="x-red">*</span>院系
+                        <label class="layui-form-label">
+                            性别
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="a4" name="college"   lay-verify="required"
-                                   autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="L_pass1" class="layui-form-label">
-                            <span class="x-red">*</span>班级
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="a5" name="cls"   lay-verify="required"
-                                   placeholder="例如1601软件工程"   autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label for="L_pass" class="layui-form-label">
-                            <span class="x-red">*</span>性别
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="radio" id="sex1" name="sex" value="1" title="男">
-                            <input type="radio" id="sex2" name="sex" value="2" title="女">
-                        </div>
-                    </div>
-
-
-                    <div class="layui-form-item">
-                        <label for="L_pass1" class="layui-form-label">
-                            <span class="x-red">*</span>年龄
-                        </label>
-                        <div class="layui-input-inline">
-                            <input type="text" id="a6" name="age"   lay-verify="number"
-                                   autocomplete="off" class="layui-input">
+                            <input type="radio" name="gender" value="1" title="男">
+                            <input type="radio" name="gender" value="0" title="女">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label for="L_pass1" class="layui-form-label">
-                            <span class="x-red">*</span>手机号
+                        <label class="layui-form-label">
+                            手机号
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="a7" name="mobile"   lay-verify="number"
+                            <input type="text" id="a7" name="phone"   lay-verify="number"
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label for="L_pass1" class="layui-form-label">
-                            <span class="x-red">*</span>创建时间
+                        <label class="layui-form-label">
+                            个性签名
                         </label>
                         <div class="layui-input-inline">
-                            <input type="text" id="a10" name="createtime"   lay-verify="required" disabled="disabled"
+                            <input type="text" id="a6" name="signature"
                                    autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            头像
+                        </label>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn" id="test1" >上传头像</button>
+                            <div class="layui-upload-list">
+                                <img class="layui-upload-img" id="demo1" style="width: 80px;height: 80px;margin-left: 8.2%"><span class="x-red">*</span>需要等待弹出上传完成才可以提交数据
+                                <!--                                <p id="demoText" ></p>-->
+                                <input type="text" name="avatar" id="z" style="display: none;" />
+                            </div>
                         </div>
                     </div>
 
@@ -172,7 +163,7 @@
 					//data.field.sid=Session('sid');
                     console.log(data.field);
 					$.ajax({
-						url:url+"/sysStudent/update",
+						url:url+"/user/edit",
 						data:data.field,
 						type:'post',
                         dataType:"json",
@@ -203,6 +194,39 @@
                 });
             });
 		</script>
+
+        <script>
+            layui.use('upload', function(){
+                var $ = layui.jquery
+                    ,upload = layui.upload;
+
+                //普通图片上传
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    ,type:"post"
+                    ,url: url+'/user/upload' //改成您自己的上传接口
+                    ,before: function(obj){
+                        //预读本地文件示例，不支持ie8
+                        console.log(obj);
+                        obj.preview(function(index, file, result){
+                            console.log(index,file,result);
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    ,done: function(res){
+                        // 如果上传失败
+                        if(res.code == 1){
+                            console.log(res);
+                            $("#z").val(res.data["upload_file"]);
+                            return layer.msg('文件上传完毕');
+                        }
+                        // 上传成功
+
+                    }
+
+                });
+            });
+        </script>
 
 		<script type="text/javascript" src="./js/xcity.js"></script>
         <script>var _hmt = _hmt || []; (function() {
