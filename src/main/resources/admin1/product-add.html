@@ -98,7 +98,9 @@
             }
         });
 
-        my_index = layedit.build('content'); //建立编辑器
+        my_index = layedit.build('content',{
+            tool: ['strong','italic','underline','del','|','left','center','right','link','unlink','face']
+        }); //建立编辑器
         form.verify({
             content_verify:function (value){
                 return layedit.sync(my_index);

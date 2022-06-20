@@ -28,7 +28,7 @@
             <!-- 用户详情 -->
             <div class="card">
                 <!-- 用户的头像 -->
-                <img src="./images/head3.jpg" alt="">
+                <img id="a1" src="./images/head3.jpg" alt="">
                 <!-- 用户名 -->
                 <h3 id="a2"></h3>
                 <!-- 其它信息 -->
@@ -37,11 +37,9 @@
                 <!-- 文章分类 -->
                 <div class="counter">
                     <span>文章</span>
-                    <span>分类</span>
                 </div>
                 <div class="counter">
                     <span id="a5">2</span>
-                    <span>1</span>
                 </div>
             </div>
         </div>
@@ -55,6 +53,9 @@
         var z =JSON.parse(sessionStorage.getItem('user'));
         console.log(z);
         $('#a2').html(z['username']);
+        var avatar = z['avatar'];
+        var imgs = document.getElementById("a1");
+        imgs.src = "../../../../upload/"+avatar;
        $(function () {
            $.ajax({
                url: "/post/getall",
@@ -81,7 +82,6 @@
                             "            </div>"
                     }
                     $("#content").html(str);
-
                }
            })
        })

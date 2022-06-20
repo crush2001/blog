@@ -24,3 +24,9 @@
     text-indent: 2em;
     padding: 10px 0;
 }
+.container {
+    margin: 0 auto;
+}
+.container-right {
+    margin: 0 auto;
+}
