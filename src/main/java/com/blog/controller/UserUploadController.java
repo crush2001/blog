@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.blog.config.MiniAppConfig;
 import com.blog.tools.BaseController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,24 @@ public class UserUploadController extends BaseController {
 
         return this.RespInfo(1,"",respMap);
     }
+    @PostMapping("/upload_image")
+    public Object uploadImage(@RequestParam("file") MultipartFile mf){
+        Map<String,Object> respMap=new HashMap<>();
 
+        try{
+            // 拿到上传文件的文件名
+            String originalFilename = mf.getOriginalFilename();
+            // 保存文件
+            String uploadPath= MiniAppConfig.getUploadPath()+"/"+mf.getOriginalFilename();
+            mf.transferTo(new File(uploadPath));
+
+            respMap.put("src", uploadPath);
+            respMap.put("title",originalFilename);
+        } catch (IOException e) {
+            return e.getMessage();
+        }
+
+        return this.RespInfo(0,"", JSONObject.toJSONString(respMap));
+    }
 
 }

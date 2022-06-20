@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客注册登录</title>
+    <link rel="stylesheet" href="css/blog-login.css">
+    <script src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/md5.js"></script>
+    <script src="./js/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-box">
+            <!-- 注册 -->
+            <div class="register-box hidden">
+                <h1>用户注册</h1>
+                <input type="text" id="username" name="username" placeholder="用户名">
+                <input type="password" id="password" name="password" placeholder="密码">
+                <input type="email" id="email" name="email" placeholder="邮箱">
+                <input type="nickname" id="nickname" name="nickname" placeholder="昵称">
+                <div class="gender-selection">
+                    性别
+                    <select name="gender" id="gender">
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                </div>
+                <input type="phone" id="phone" name="phone" placeholder="手机号">
+                <input type="signature" id="signature" name="signature" placeholder="个性签名">
+                <div class="avatar-form">
+                    <label>头像</label>
+                    <div>
+                        <button type="button" id="t" style="display: none">上传头像</button>
+                        <div>
+                            <img id="demo1" style="width: 80px;height: 80px;margin-left: 8.2%">
+                            <input type="text" name="avatar" id="avatar" style="display: none;" />
+                        </div>
+                    </div>
+                </div>
+                <button id="register-button">注册</button>
+            </div>
+            <!-- 登录 -->
+            <div class="login-box">
+                <h1>用户登录</h1>
+                <input type="text" id="name" name="name" placeholder="用户名">
+                <input type="password" id="pwd" name="pwd" placeholder="密码">
+                <button id="login-button">登录</button>
+            </div>
+        </div>
+
+        <div class="com-box left">
+            <h2>欢迎来到<span>博客</span></h2>
+            <p>快来领取专属<span>博客</span></p>
+            <img src="./images/head.jpg" alt="">
+            <p>已有账号</p>
+            <button id="login">去登录</button>
+        </div>
+
+        <div class="com-box right">
+            <h2>欢迎来到<span>博客</span></h2>
+            <p>快来领取专属<span>博客</span></p>
+            <img src="./images/head2.jpg"alt="">
+            <p>没有账号？</p>
+            <button id="register">去注册</button>
+        </div>
+    </div>
+    <script>
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                ,upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#t'
+                ,type:"post"
+                ,url: 'http://localhost:8080/user/upload' //改成您自己的上传接口
+                ,before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    console.log(obj);
+                    obj.preview(function(index, file, result){
+                        console.log(index,file,result);
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                ,done: function(res){
+                    // 如果上传失败
+                    if(res.code === 1){
+                        console.log(res);
+                        $("#avatar").val(res.data["upload_file"]);
+                        // console.log(res.data["upload_file"])
+                        return layer.msg('文件上传完毕');
+                    }
+                    // 上传成功
+
+                }
+
+            });
+        });
+    </script>
+    <script>
+        //操作元素
+        let login = document.getElementById("login");
+        let register = document.getElementById("register");
+        let form_box = document.getElementsByClassName("form-box")[0];
+        let register_box = document.getElementsByClassName("register-box")[0];
+        let login_box = document.getElementsByClassName("login-box")[0];
+
+        //点击去注册按钮 点击事件 (es6表达式)
+        register.addEventListener('click',()=>{
+            form_box.style.transform = 'translateX(100%)';
+            login_box.classList.add('hidden');
+            register_box.classList.remove('hidden');
+        })
+        //点击登录按钮 点击事件
+        login.addEventListener('click',()=>{
+            form_box.style.transform = 'translateX(0%)';
+            register_box.classList.add('hidden');
+            login_box.classList.remove('hidden');
+        })
+
+
+    </script>
+    <script>
+        $(function() {
+            $("#login-button").click(function(event){
+                var name = $("#name").val();
+                var pwd = $("#pwd").val();
+                console.log($("#name").val()+$("#pwd").val());
+                if(name!="" && pwd!="") {
+                    var urlz = window.location.host;
+                    var sid = spMD5(name);
+                    $.ajax({
+                        url:"http://localhost:8080/user/login",
+                        type:'post',
+                        dataType:"json",
+                        data:{
+                            username:name,
+                            password:pwd,
+                        },
+                        async: false,
+				        success:function(msg){
+                            console.log(msg)
+                            // if(msg.code==1)
+                            if(msg.data!=null)
+                            {
+
+                                event.preventDefault();
+                                $('form').fadeOut(500);
+                                $('.wrapper').addClass('form-success');
+                                // sessionStorage.setItem('login',name);
+                                // sessionStorage.setItem("powerz",msg.data[1]);
+                                sessionStorage.setItem('user',JSON.stringify(msg.data));
+                                sessionStorage.setItem("name",name);
+                                sessionStorage.setItem('sid',sid);
+                                //console.log(JSON.parse(sessionStorage.getItem('login')));
+                                // alert(msg.info);
+                                setTimeout(send,2000)
+                            }else{
+                                alert("账号或密码错误，登录失败！");
+                            }
+				        }
+                    })
+                }else {
+                    alert("输入不完整，登录失败！")
+                }
+            })
+            $("#register-button").click(function(event) {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                var email = $("#email").val();
+                var nickname = $("#nickname").val();
+                var gender = $("#gender").val();
+                var phone = $("#phone").val();
+                var signature = $("#signature").val();
+                var avatar = $("#avatar").val();
+                console.log($("#username").val()+$("#password").val()+$("#email").val() + $("#nickname").val() + $("#gender").val() + $("#phone").val() + $("#signature").val()+$("#avatar").val());
+                if(username!="" && password!="" && nickname!="") {
+                    $.ajax({
+                        url:"http://localhost:8080/user",
+                        type:'post',
+                        dataType:"json",
+                        data:{
+                            username:username,
+                            password:password,
+                            email:email,
+                            nickname:nickname,
+                            gender:gender,
+                            phone:phone,
+                            signature:signature,
+                            avatar:avatar,
+                        },
+                        xhrFields:{
+                            withCredentials:true
+                        },
+                        success:function(msg){
+                            console.log(msg)
+                            // if(msg.code==1)
+                            if(msg!=null)
+                            {
+                                alert("注册成功，请登录！");
+                                setTimeout(registerSend,500);
+                            }else{
+                                alert("输入不完整，注册失败！");
+                            }
+                        }
+                    })
+                }else {
+                    alert("输入不完整，注册失败！");
+                }
+            })
+        })
+        function send() {
+            location.href = './blog_list.html';
+        }
+        function registerSend() {
+            location.href = './blog_login.html'
+        }
+    </script>
+</body>
+</html>

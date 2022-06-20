@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>校园二手市场管理系统</title>
+    <title>写博客</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
@@ -123,11 +123,11 @@
                     console.log(msg);
 
                     if (msg) {
-                        layer.alert("添加成功", {
+                        layer.alert("发表成功", {
                                 icon: 6,
                                 btn: ['确定'],
                                 yes: function() {
-                                    window.location.href = "./admin-add.html";
+                                    window.location.href = "./blog_list.html";
                                 }
                             },
                             function () {
@@ -135,7 +135,7 @@
                                 xadmin.close();
                             });
                     } else {
-                        layer.alert("添加失败", {
+                        layer.alert("发表失败", {
                             icon: 5
                         })
                     }
