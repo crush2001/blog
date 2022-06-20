@@ -8,7 +8,6 @@
         <result property="commentUserId" column="comment_user_id" jdbcType="INTEGER"/>
         <result property="commentTime" column="comment_time" jdbcType="TIMESTAMP"/>
         <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
-        <result property="replyCommentId" column="reply_comment_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
@@ -41,9 +40,6 @@
             <if test="Comment.commentContent != null and Comment.commentContent != ''">
                 and comment_content = #{Comment.commentContent}
             </if>
-            <if test="Comment.replyCommentId != null">
-                and reply_comment_id = #{Comment.replyCommentId}
-            </if>
         </where>
         limit #{page}, #{pageSize}
     </select>
@@ -68,16 +64,13 @@
             <if test="commentContent != null and commentContent != ''">
                 and comment_content = #{commentContent}
             </if>
-            <if test="replyCommentId != null">
-                and reply_comment_id = #{replyCommentId}
-            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_content)
-        values (#{postId}, #{commentUserId}, #{commentContent})
+        insert into comment(post_id, comment_user_id, comment_time, comment_content)
+        values (#{postId}, #{commentUserId}, #{commentTime}, #{commentContent})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">

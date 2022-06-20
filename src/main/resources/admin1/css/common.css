@@ -72,11 +72,25 @@ html, body {
 }
 
 /* 右侧区域样式 */
+/*
 .container .container-right {
     height: 100%;
     width: 795px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
+}
+*/
+/*
+    添加的测试部分
+    右侧区域样式二
+*/
+.container .container-right {
+    height: 100%;
+    width: 795px;
+    /* background-color: rgba(255, 255, 255, 0.3); */
+    /* border-radius: 20px; */
+    display: flex;
+    flex-direction: column;
 }
 
 /* 用户信息卡片，也会在多个页面中用到 */
@@ -114,4 +128,73 @@ html, body {
     justify-content: space-around;
     font-size: 15px;
     padding-top: 5px;
+}
+
+.container-right .mainbar {
+    margin: 0;
+    float: left;
+}
+
+.container-right .mainbar img {
+    float: left;
+    padding: 4px;
+    margin: 0 10px 0 0;
+    border-radius: 20px;
+    background-color: #fff;
+}
+
+.container-right .mainbar .article {
+    margin: 0 0 20px 0;
+    padding: 30px 20px;
+    width: 795px;
+    /*border: 2px solid black;*/
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.container-right .mainbar .article span.butons a {
+    margin: 0 5px 0 0;
+    float: right;
+    color: #9a9a9a;
+    padding: 1px 10px;
+    text-decoration: none;
+    border-radius: 20px;
+    background: #fbfbfc;
+}
+
+.container-right .mainbar .article span.butons a:hover {
+    border-radius: 20px;
+    background: #40b5ff;
+    color: #fff;
+    text-decoration: none;
+}
+
+.container-right .mainbar .article span.butons a.active {
+    border-radius: 20px;
+    background: #40b5ff;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* subpages */
+.container-right .mainbar .comment {
+    margin: 0;
+    padding: 10px 0 10px 0;
+    /* border-style: inset; */
+}
+
+.container-right .mainbar .comment img.userpic {
+    border: 1px solid #dedede;
+    margin: 10px 16px 0 0;
+    padding: 0;
+    float: left;
+}
+
+.clr {
+    clear: both;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    font-size: 0px;
+    line-height: 0px;
 }

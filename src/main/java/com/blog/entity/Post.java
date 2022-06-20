@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Post)实体类
  *
  * @author makejava
- * @since 2022-06-20 18:25:43
+ * @since 2022-06-20 19:51:42
  */
 public class Post implements Serializable {
-    private static final long serialVersionUID = 386307458701844320L;
+    private static final long serialVersionUID = -97673702247962073L;
     /**
      * 帖子id
      */

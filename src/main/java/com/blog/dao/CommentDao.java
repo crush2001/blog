@@ -9,7 +9,7 @@ import java.util.List;
  * (Comment)表数据库访问层
  *
  * @author makejava
- * @since 2022-06-15 08:45:47
+ * @since 2022-06-20 19:51:41
  */
 public interface CommentDao {
 

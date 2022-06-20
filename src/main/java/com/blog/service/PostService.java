@@ -8,7 +8,7 @@ import java.util.List;
  * (Post)表服务接口
  *
  * @author makejava
- * @since 2022-06-15 08:45:47
+ * @since 2022-06-20 19:51:42
  */
 public interface PostService {
 

@@ -9,13 +9,14 @@
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="postTime" column="post_time" jdbcType="TIMESTAMP"/>
-        <result property="tags" column="tags" jdbcType="VARCHAR"/>
+        <result property="authorNickname" column="author_nickname" jdbcType="VARCHAR"/>
+        <result property="authorAvatar" column="author_avatar" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="PostMap">
         select
-          id, author_id, cat_id, title, content, post_time
+          id, author_id, cat_id, title, content, post_time, author_nickname, author_avatar
         from post
         where id = #{id}
     </select>
@@ -24,7 +25,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="PostMap">
         select
-          id, author_id, cat_id, title, content, post_time
+          id, author_id, cat_id, title, content, post_time, author_nickname, author_avatar
         from post
         <where>
             <if test="Post.id != null">
@@ -45,8 +46,11 @@
             <if test="Post.postTime != null">
                 and post_time = #{Post.postTime}
             </if>
-            <if test="Post.tags != null">
-                and tags = #{Post.tags}
+            <if test="Post.authorNickname != null and Post.authorNickname != ''">
+                and author_nickname = #{Post.authorNickname}
+            </if>
+            <if test="Post.authorAvatar != null and Post.authorAvatar != ''">
+                and author_avatar = #{Post.authorAvatar}
             </if>
         </where>
         limit #{page}, #{pageSize}
@@ -75,8 +79,11 @@
             <if test="postTime != null">
                 and post_time = #{postTime}
             </if>
-            <if test="tags != null">
-                and tags = #{tags}
+            <if test="authorNickname != null and authorNickname != ''">
+                and author_nickname = #{authorNickname}
+            </if>
+            <if test="authorAvatar != null and authorAvatar != ''">
+                and author_avatar = #{authorAvatar}
             </if>
         </where>
     </select>
@@ -88,25 +95,24 @@
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into post(author_id, cat_id, title, content, post_time)
+        insert into post(author_id, cat_id, title, content)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime})
+        (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into post(author_id, cat_id, title, content, post_time)
+        insert into post(author_id, cat_id, title, content)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime})
+            (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content})
         </foreach>
         on duplicate key update
         author_id = values(author_id),
         cat_id = values(cat_id),
         title = values(title),
-        content = values(content),
-        post_time = values(post_time),
+        content = values(content)
     </insert>
 
     <!--通过主键修改数据-->
@@ -124,9 +130,6 @@
             </if>
             <if test="content != null and content != ''">
                 content = #{content},
-            </if>
-            <if test="postTime != null">
-                post_time = #{postTime},
             </if>
         </set>
         where id = #{id}
