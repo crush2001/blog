@@ -15,7 +15,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="PostMap">
         select
-          id, author_id, cat_id, title, content, post_time, tags
+          id, author_id, cat_id, title, content, post_time
         from post
         where id = #{id}
     </select>
@@ -24,7 +24,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="PostMap">
         select
-          id, author_id, cat_id, title, content, post_time, tags
+          id, author_id, cat_id, title, content, post_time
         from post
         <where>
             <if test="Post.id != null">
@@ -88,18 +88,18 @@
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into post(author_id, cat_id, title, content, post_time, tags)
+        insert into post(author_id, cat_id, title, content, post_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime}, #{entity.tags})
+        (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into post(author_id, cat_id, title, content, post_time, tags)
+        insert into post(author_id, cat_id, title, content, post_time)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime}, #{entity.tags})
+            (#{entity.authorId}, #{entity.catId}, #{entity.title}, #{entity.content}, #{entity.postTime})
         </foreach>
         on duplicate key update
         author_id = values(author_id),
@@ -107,7 +107,6 @@
         title = values(title),
         content = values(content),
         post_time = values(post_time),
-        tags = values(tags)
     </insert>
 
     <!--通过主键修改数据-->
@@ -128,9 +127,6 @@
             </if>
             <if test="postTime != null">
                 post_time = #{postTime},
-            </if>
-            <if test="tags != null">
-                tags = #{tags},
             </if>
         </set>
         where id = #{id}

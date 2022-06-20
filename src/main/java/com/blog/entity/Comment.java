@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Comment)实体类
  *
  * @author makejava
- * @since 2022-06-15 08:45:47
+ * @since 2022-06-20 19:33:35
  */
 public class Comment implements Serializable {
-    private static final long serialVersionUID = 421510747109094249L;
+    private static final long serialVersionUID = -17407290691498786L;
     /**
      * 评论id
      */
@@ -31,10 +31,6 @@ public class Comment implements Serializable {
      * 评论内容
      */
     private String commentContent;
-    /**
-     * 回复的评论的id
-     */
-    private Long replyCommentId;
 
 
     public Long getId() {
@@ -75,14 +71,6 @@ public class Comment implements Serializable {
 
     public void setCommentContent(String commentContent) {
         this.commentContent = commentContent;
-    }
-
-    public Long getReplyCommentId() {
-        return replyCommentId;
-    }
-
-    public void setReplyCommentId(Long replyCommentId) {
-        this.replyCommentId = replyCommentId;
     }
 
 }

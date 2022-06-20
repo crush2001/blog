@@ -14,7 +14,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="CommentMap">
         select
-          id, post_id, comment_user_id, comment_time, comment_content, reply_comment_id
+          id, post_id, comment_user_id, comment_time, comment_content
         from comment
         where id = #{id}
     </select>
@@ -23,7 +23,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="CommentMap">
         select
-          id, post_id, comment_user_id, comment_time, comment_content, reply_comment_id
+          id, post_id, comment_user_id, comment_time, comment_content
         from comment
         <where>
             <if test="Comment.id != null">
@@ -76,30 +76,29 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_content, reply_comment_id)
-        values (#{postId}, #{commentUserId}, #{commentContent}, #{replyCommentId})
+        insert into comment(post_id, comment_user_id, comment_content)
+        values (#{postId}, #{commentUserId}, #{commentContent})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_time, comment_content, reply_comment_id)
+        insert into comment(post_id, comment_user_id, comment_time, comment_content)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent}, #{entity.replyCommentId})
+        (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_time, comment_content, reply_comment_id)
+        insert into comment(post_id, comment_user_id, comment_time, comment_content)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent}, #{entity.replyCommentId})
+            (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent})
         </foreach>
         on duplicate key update
         post_id = values(post_id),
         comment_user_id = values(comment_user_id),
         comment_time = values(comment_time),
-        comment_content = values(comment_content),
-        reply_comment_id = values(reply_comment_id)
+        comment_content = values(comment_content)
     </insert>
 
     <!--通过主键修改数据-->
@@ -117,9 +116,6 @@
             </if>
             <if test="commentContent != null and commentContent != ''">
                 comment_content = #{commentContent},
-            </if>
-            <if test="replyCommentId != null">
-                reply_comment_id = #{replyCommentId},
             </if>
         </set>
         where id = #{id}

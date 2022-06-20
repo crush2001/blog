@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Post)实体类
  *
  * @author makejava
- * @since 2022-06-15 08:45:47
+ * @since 2022-06-20 18:25:43
  */
 public class Post implements Serializable {
-    private static final long serialVersionUID = 655845048404610241L;
+    private static final long serialVersionUID = 386307458701844320L;
     /**
      * 帖子id
      */
@@ -36,9 +36,13 @@ public class Post implements Serializable {
      */
     private Date postTime;
     /**
-     * 标签
+     * 作者昵称
      */
-    private Object tags;
+    private String authorNickname;
+    /**
+     * 作者头像
+     */
+    private String authorAvatar;
 
 
     public Long getId() {
@@ -89,12 +93,20 @@ public class Post implements Serializable {
         this.postTime = postTime;
     }
 
-    public Object getTags() {
-        return tags;
+    public String getAuthorNickname() {
+        return authorNickname;
     }
 
-    public void setTags(Object tags) {
-        this.tags = tags;
+    public void setAuthorNickname(String authorNickname) {
+        this.authorNickname = authorNickname;
+    }
+
+    public String getAuthorAvatar() {
+        return authorAvatar;
+    }
+
+    public void setAuthorAvatar(String authorAvatar) {
+        this.authorAvatar = authorAvatar;
     }
 
 }
