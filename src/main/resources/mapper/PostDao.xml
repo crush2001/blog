@@ -21,6 +21,23 @@
         where id = #{id}
     </select>
 
+    <select id="getPostByCatId" parameterType="java.lang.Long"
+            resultMap="PostMap">
+        select
+            id, author_id, cat_id, title, content, post_time, author_nickname, author_avatar
+        from post
+        where post.cat_id = #{catId}
+    </select>
+
+    <select id="getPostBySearch" parameterType="java.lang.String"
+            resultMap="PostMap">
+        select
+            id, author_id, cat_id, title, content, post_time, author_nickname, author_avatar
+        from post
+        where post.title LIKE "%" #{value} "%"  OR
+    post.content LIKE "%" #{value} "%"
+    </select>
+
 
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="PostMap">
@@ -139,6 +156,5 @@
     <delete id="deleteById">
         delete from post where id = #{id}
     </delete>
-
 </mapper>
 

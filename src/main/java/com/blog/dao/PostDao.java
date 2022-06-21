@@ -82,5 +82,8 @@ public interface PostDao {
      */
     int deleteById(Long id);
 
+    List<Post> getPostByCatId(Long catId);
+
+    List<Post> getPostBySearch(String value);
 }
 

@@ -66,7 +66,7 @@ public class CommentController extends BaseController {
      * @param comment 实体
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Comment> add(Comment comment) {
         return ResponseEntity.ok(this.commentService.insert(comment));
     }

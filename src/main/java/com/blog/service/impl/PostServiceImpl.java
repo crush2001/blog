@@ -90,4 +90,13 @@ public class PostServiceImpl implements PostService {
     public boolean deleteById(Long id) {
         return this.postDao.deleteById(id) > 0;
     }
+    @Override
+    public List<Post> getPostByCatId(Long catId) {
+        return postDao.getPostByCatId(catId);
+    }
+
+    @Override
+    public List<Post> getPostBySearch(String value) {
+        return postDao.getPostBySearch(value);
+    }
 }

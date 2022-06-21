@@ -93,5 +93,22 @@ public class PostController extends BaseController {
         return ResponseEntity.ok(this.postService.deleteById(id));
     }
 
+    @GetMapping("/queryByCatId/{catId}")
+    public String  getPostByCatId( @PathVariable("catId") Long catId) {
+        List<Post> posts = postService.getPostByCatId(catId);
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(posts);
+        return RespInfo(1, "通过分类id获取博文", jsonArray);
+    }
+
+
+    @GetMapping("/queryBySearch/{value}")
+    public String  getPostBySearch( @PathVariable("value") String value) {
+        List<Post> posts = postService.getPostBySearch(value);
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(posts);
+        System.out.println(jsonArray.toJSONString());
+        return RespInfo(1, "搜索结果", jsonArray);
+    }
 }
 
