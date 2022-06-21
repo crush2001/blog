@@ -8,12 +8,14 @@
         <result property="commentUserId" column="comment_user_id" jdbcType="INTEGER"/>
         <result property="commentTime" column="comment_time" jdbcType="TIMESTAMP"/>
         <result property="commentContent" column="comment_content" jdbcType="VARCHAR"/>
+        <result property="commentNickname" column="comment_nickname" jdbcType="VARCHAR"/>
+        <result property="commentAvatar" column="comment_avatar" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="CommentMap">
         select
-          id, post_id, comment_user_id, comment_time, comment_content
+          id, post_id, comment_user_id, comment_time, comment_content, comment_nickname, comment_avatar
         from comment
         where id = #{id}
     </select>
@@ -22,7 +24,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimits" resultMap="CommentMap">
         select
-          id, post_id, comment_user_id, comment_time, comment_content
+          id, post_id, comment_user_id, comment_time, comment_content, comment_nickname, comment_avatar
         from comment
         <where>
             <if test="Comment.id != null">
@@ -39,6 +41,12 @@
             </if>
             <if test="Comment.commentContent != null and Comment.commentContent != ''">
                 and comment_content = #{Comment.commentContent}
+            </if>
+            <if test="Comment.commentNickname != null and Comment.commentNickname != ''">
+                and comment_nickname = #{Comment.commentNickname}
+            </if>
+            <if test="Comment.commentAvatar != null and Comment.commentAvatar != ''">
+                and comment_avatar = #{Comment.commentAvatar}
             </if>
         </where>
         limit #{page}, #{pageSize}
@@ -64,33 +72,38 @@
             <if test="commentContent != null and commentContent != ''">
                 and comment_content = #{commentContent}
             </if>
+            <if test="commentNickname != null and commentNickname != ''">
+                and comment_nickname = #{commentNickname}
+            </if>
+            <if test="commentAvatar != null and commentAvatar != ''">
+                and comment_avatar = #{commentAvatar}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_time, comment_content)
-        values (#{postId}, #{commentUserId}, #{commentTime}, #{commentContent})
+        insert into comment(post_id, comment_user_id, comment_content)
+        values (#{postId}, #{commentUserId}, #{commentContent})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_time, comment_content)
+        insert into comment(post_id, comment_user_id, comment_content)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent})
+        (#{entity.postId}, #{entity.commentUserId}, #{entity.commentContent})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into comment(post_id, comment_user_id, comment_time, comment_content)
+        insert into comment(post_id, comment_user_id, comment_content)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.postId}, #{entity.commentUserId}, #{entity.commentTime}, #{entity.commentContent})
+            (#{entity.postId}, #{entity.commentUserId}, #{entity.commentContent})
         </foreach>
         on duplicate key update
         post_id = values(post_id),
         comment_user_id = values(comment_user_id),
-        comment_time = values(comment_time),
         comment_content = values(comment_content)
     </insert>
 
@@ -103,9 +116,6 @@
             </if>
             <if test="commentUserId != null">
                 comment_user_id = #{commentUserId},
-            </if>
-            <if test="commentTime != null">
-                comment_time = #{commentTime},
             </if>
             <if test="commentContent != null and commentContent != ''">
                 comment_content = #{commentContent},
